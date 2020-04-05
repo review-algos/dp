@@ -4,23 +4,27 @@
 
 using namespace std;
 
+int mfknapsack(int i, int j, vector<vector<int>> &F, vector<pair<int, int>> things) {
+    if (F[i][j] < 0) {
+        if (j >= things[i - 1].first)
+            F[i][j] = max(mfknapsack(i - 1, j, F, things), mfknapsack(i - 1, j - things[i - 1].first, F, things) + things[i - 1].second);
+        else
+            F[i][j] = mfknapsack(i - 1, j, F, things);
+    }
+    return F[i][j];
+}
+
 int knapsack(vector<pair<int, int>> things, int capacity, vector<int> &result) {
     int n = things.size() + 1;
     int m = capacity + 1;
-    vector<vector<int>> F(n, vector<int>(m, 0));
+    vector<vector<int>> F(n, vector<int>(m, -1));
+    
+    for (int i = 0; i < n; i++)
+        F[i][0] = 0;
+    for (int j = 0; j < m; j++)
+        F[0][j] = 0;
 
-    /// 1. compute F[i][j]
-    for (int i = 1; i < n; i++) {
-        for (int j = 1; j < m; j++) {
-            // if j > Wi then F[i][j]=max(F[i-1][j], F[i-1][j-Wi]+Vi)
-            if (j >= things[i - 1].first) {
-                F[i][j] = max(F[i - 1][j], F[i - 1][j - things[i - 1].first] + things[i - 1].second);
-            // else F[i][j]=F[i-1][j]
-            } else {
-                F[i][j] = F[i - 1][j];
-            }
-        }
-    }
+    int rst = mfknapsack(n - 1, m - 1, F, things);
 
     /// 2. backtrace result set
     for (int i = n - 1, j = m - 1; i != 0 && j != 0; i--) {
@@ -29,8 +33,8 @@ int knapsack(vector<pair<int, int>> things, int capacity, vector<int> &result) {
             j -= things[i - 1].first;
         }
     }
-    
-    return F[n - 1][m - 1];
+
+    return rst;
 }
 
 int main(int argc, char **argv) {
