@@ -28,8 +28,8 @@ int coin_change(vector<unsigned int> coins, unsigned int n) {
 }
 
 int main(int argc, char **argv) {
-    vector<unsigned int> coins {1, 3, 4};
-    int n = 6;
+    vector<unsigned int> coins {1, 3, 5};
+    int n = 9;
 
     sort(coins.begin(), coins.end(), less<int>());
     int rst = coin_change(coins, n);

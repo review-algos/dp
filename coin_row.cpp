@@ -42,7 +42,7 @@ int coin_row(vector<int> coins, vector<int> &selected) {
 }
 
 int main(int argc, char **argv) {
-    vector<int> coins {5, 1, 2, 10, 6, 2};
+    vector<int> coins {5, 1, 2, 10, 6};
     vector<int> results;
 
     int rst = coin_row(coins, results);
